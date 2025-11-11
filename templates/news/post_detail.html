@@ -1,0 +1,30 @@
+{% extends 'flatpages/default.html' %}
+{% load news_filters %)
+{% block title %}
+Все публикации
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Автор</th>
+                    <th> Заголовок</th>
+                    <th> Превью</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ posts.author.user.username }}</td>
+                    <td>{{ posts.title }}</td>
+                    <td>{{ posts.text }}</td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}
