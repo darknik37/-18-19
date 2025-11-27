@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse_lazy
 
 """"
 Модель Author
@@ -32,17 +33,22 @@ cвязь «один к одному» с встроенной моделью п
 дата и время создания комментария;
 рейтинг комментария.
 """
-
-
+from email.policy import default
 
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.user.username
 
 class Category(models.Model):
-  name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
 
 class Post(models.Model):
     news = "NW"
@@ -70,13 +76,16 @@ class Post(models.Model):
         else:
             return self.text[:124] + "..."
 
+    def get_absolute_url(self):
+        return reverse_lazy('post_detail', kwargs= {'pk': self.pk})
+
 
 class PostCategory(models.Model):
-    postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
-    categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.categoryThrough} | {self.postThrough}'
+        return f'{self.category} | {self.post}'
 
 
 class Comment(models.Model):
